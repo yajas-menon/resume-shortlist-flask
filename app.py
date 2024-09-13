@@ -184,6 +184,44 @@ def extract_skills_and_intent(resume_text):
         "objectives": objectives
     }
 
+def extract_education_details(resume_text):
+    # Regex pattern to capture education-related information (degree, university, years)
+    education_pattern = re.compile(r'(Bachelor|Master|PhD|B\.Sc|M\.Sc|MBA|Associate|Diploma|High School|University|College)\s+(.*?)(\d{4})', re.IGNORECASE)
+    education_matches = education_pattern.findall(resume_text)
+    
+    education_details = []
+    for match in education_matches:
+        degree = match[0].strip()
+        institution = match[1].strip()
+        year = match[2].strip()
+        education_details.append({
+            "degree": degree,
+            "institution": institution,
+            "year": year
+        })
+    
+    return education_details
+
+def extract_experience_details(resume_text):
+    # Regex pattern to capture experience-related information (job title, company, years)
+    experience_pattern = re.compile(r'(Intern|Engineer|Manager|Developer|Analyst|Consultant|Officer|Specialist|Lead|Director)\s+at\s+(.*?)\s+\(?(\d{4})\)?[-–](\d{4}|Present)', re.IGNORECASE)
+    experience_matches = experience_pattern.findall(resume_text)
+    
+    experience_details = []
+    for match in experience_matches:
+        job_title = match[0].strip()
+        company = match[1].strip()
+        start_year = match[2].strip()
+        end_year = match[3].strip()
+        experience_details.append({
+            "job_title": job_title,
+            "company": company,
+            "start_year": start_year,
+            "end_year": end_year
+        })
+    
+    return experience_details
+
 @app.route('/upload', methods=['POST'])
 @cross_origin()
 def upload_resume():
