@@ -6,6 +6,10 @@ import re
 import spacy
 import json
 from groq import Groq
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -21,9 +25,8 @@ nlp_spacy = spacy.load("en_core_web_lg")
 EMAIL_PATTERN = re.compile(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b')
 PHONE_PATTERN = re.compile(r'(\+?\d{1,3})?[-.\s]?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}')
 
-client = Groq(api_key="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")
+client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 # Set up OpenAI API key
-# openai.api_key = 'sk-6e4BzDsiLC78tNavsBV1VJymxPA5ogWTUhiguLyxtMT3BlbkFJFiHlQwCw_2qxnp211SMn3XsjUKt8Xvs2maXHh71BMA'
 
 def extract_text_from_pdf(file):
     """Extract text from PDF using pdfplumber."""
